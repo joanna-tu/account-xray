@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Account X-ray - a complete example run</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="The whole artifact one message produces: meeting card, dossier, POVs, evidence table and the reality check. Every name invented, the method real.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Account X-ray: a complete example run">
+<meta property="og:description" content="One typed message in, a full pre-meeting profile out. Read the entire example: card, dossier, POVs, evidence, reality check.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232f5d4a'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-style='italic' font-size='42' fill='%23eac054' text-anchor='middle'%3EX%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=National+Park:wght@300;400;500;600;700&display=swap">
+<script src="/ga.js" defer></script>
+<style>
+:root {
+  --radius: 0.375rem;
+  --cream: oklch(0.966 0.024 96);
+  --forest: oklch(0.418 0.079 168);
+  --forest-deep: oklch(0.325 0.062 168);
+  --mint: oklch(0.925 0.058 128);
+  --mustard: oklch(0.824 0.137 87);
+  --ink: oklch(0.19 0.008 96);
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: oklch(0.988 0.014 96);
+  --muted: oklch(0.93 0.02 96);
+  --muted-foreground: oklch(0.48 0.014 120);
+  --border: oklch(0.88 0.022 96);
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-sans: "National Park", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --shadow-block-sm: 4px 4px 0 0 var(--ink);
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-sans); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+::selection { background: var(--mustard); color: var(--ink); }
+a { color: inherit; }
+.display-italic { font-family: var(--font-display); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+.label-caps { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.muted { color: var(--muted-foreground); }
+.site-head { border-bottom: 2px solid var(--ink); background: var(--forest); color: var(--cream); }
+.site-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.5rem; max-width: 64rem; margin: 0 auto; }
+.site-head .brand { font-size: 1.5rem; }
+.head-cta { border: 2px solid var(--ink); background: var(--mustard); color: var(--ink); border-radius: var(--radius); padding: 0.5rem 1rem; text-decoration: none; }
+.intro { border-bottom: 2px solid var(--ink); background: var(--mint); }
+.intro .wrap { max-width: 46rem; margin: 0 auto; padding: 2.5rem 1.5rem; }
+.intro h1 { margin: 0.75rem 0 0; font-weight: 400; font-size: clamp(2rem, 5vw, 2.75rem); line-height: 1.1; color: var(--forest-deep); }
+.intro p.sub { margin: 1rem 0 0; line-height: 1.65; color: var(--muted-foreground); }
+article { max-width: 46rem; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+.doc .msg { border: 1.5px solid var(--ink); border-radius: var(--radius); background: var(--mint); color: var(--ink); padding: 0.7rem 0.9rem; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.6; margin-bottom: 1.4rem; }
+.doc .h1 { font-family: var(--font-display); font-style: italic; font-size: 1.8rem; line-height: 1.2; color: var(--ink); }
+.doc .meta { font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.8; color: var(--muted-foreground); margin-top: 0.8rem; }
+.doc .meta strong { color: var(--foreground); }
+.doc .sec { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--forest); margin: 2.2rem 0 0.7rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+.doc p, .doc li { font-size: 0.88rem; line-height: 1.65; color: var(--muted-foreground); margin: 0; }
+.doc p + p { margin-top: 0.6rem; }
+.doc strong { color: var(--foreground); }
+.doc .mk { font-family: var(--font-mono); font-size: 0.7rem; color: var(--forest); }
+.doc ul { list-style: disc; padding-left: 1.15rem; margin: 0.5rem 0 0; }
+.doc li + li { margin-top: 0.55rem; }
+.doc ol { padding-left: 1.2rem; margin: 0.5rem 0 0; }
+.doc ol li + li { margin-top: 0.65rem; }
+.doc .hold { display: block; margin-top: 0.25rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.02em; color: var(--forest); }
+.doc table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 0.6rem; }
+.doc th { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; text-align: left; color: var(--muted-foreground); border-bottom: 1.5px solid var(--ink); padding: 0 0.5rem 0.35rem 0; font-weight: 500; }
+.doc td { border-bottom: 1px solid var(--border); padding: 0.45rem 0.5rem 0.45rem 0; vertical-align: top; line-height: 1.55; color: var(--muted-foreground); }
+.doc td strong { color: var(--foreground); }
+.doc blockquote { margin: 1rem 0 0; padding: 0.6rem 0.9rem; border-left: 3px solid var(--mustard); background: var(--muted); font-size: 0.82rem; line-height: 1.65; color: var(--foreground); font-style: italic; }
+.doc .hr { border: 0; border-top: 2px solid var(--ink); margin: 2rem 0; }
+.doc .legend { font-family: var(--font-mono); font-size: 0.68rem; line-height: 1.65; color: var(--muted-foreground); }
+.doc .close { font-family: var(--font-display); font-style: italic; font-size: 1rem; line-height: 1.6; color: var(--ink); }
+.doc .close + .close { margin-top: 0.55rem; }
+.outro { border-top: 2px solid var(--ink); background: var(--forest); color: var(--cream); }
+.outro .wrap { max-width: 46rem; margin: 0 auto; padding: 3rem 1.5rem; }
+.outro h2 { margin: 0; font-weight: 400; font-size: clamp(1.75rem, 4vw, 2.25rem); }
+.outro p { margin: 1rem 0 0; line-height: 1.65; color: color-mix(in oklab, var(--cream) 80%, transparent); }
+.outro .row { margin-top: 1.75rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+.btn-mustard { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--mustard); color: var(--ink); border: 2px solid var(--ink); border-radius: var(--radius); padding: 0.9rem 1.6rem; font-family: inherit; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.85rem; text-decoration: none; box-shadow: var(--shadow-block-sm); }
+.outro a.plain { color: var(--mustard); }
+.site-foot { border-top: 2px solid var(--ink); background: var(--forest-deep); color: var(--cream); }
+.site-foot .wrap { max-width: 64rem; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 2rem 1.5rem; }
+.site-foot .small { font-size: 0.875rem; color: color-mix(in oklab, var(--cream) 70%, transparent); }
+.site-foot a { color: var(--mustard); }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <span class="display-italic brand">Account X-ray</span>
+    <a href="/#pack" class="label-caps head-cta">Run your first X-ray</a>
+  </div>
+</header>
+
+<section class="intro">
+  <div class="wrap">
+    <p class="label-caps" style="color:var(--forest)">A real run, October 27, 2026 &middot; names, places and numbers changed</p>
+    <h1 class="display-italic">This is the whole artifact one message produces.</h1>
+    <p class="sub">This is a real run before a real first call, disguised. The seller, the account, the person, the places, the numbers and the sources are all changed, so nobody can be recognized. The findings, the structure, the checks and the honesty are what the run returned. Why disguised? Publishing a real person's dossier to market a research kit is exactly the move this kit refuses. It reads in about ten minutes. The card alone reads in one.</p>
+  </div>
+</section>
+
+<article>
+<div class="doc" id="report">
+        <p class="msg stop">Prep me for a first call: I work at Shop.io, I'm meeting Daniel Reyes at Whitfield. Use the framework: xray.joannatu.com/full</p>
+
+        <p class="h1">Account X-ray: Whitfield &amp; Co.</p>
+        <p class="meta"><strong>Files read:</strong> 01, 02 + full catalog, 03-10<br>
+        <strong>Working assumption:</strong> <span class="mk">[H]</span> Shop.io sells a hosted commerce platform (checkout, B2C, B2B and retail, plus migration support) to brands up to enterprise category leaders; best fit where a brand's online stack slows growth or splits across brands and markets. Taken from shop.io/enterprise, read today; correct it and I will rebuild on your version.<br>
+        <strong>TARGET read as:</strong> Whitfield &amp; Co., the Philadelphia jewelry and watch retailer, wholly owned by Calder Brands (Nasdaq-listed). Not Whitfield Capital, the Ohio debt-collection company, which dominates search results for the same name.<br>
+        <strong>Meeting:</strong> Daniel Reyes, Director of E-commerce, Whitfield &middot; <strong>Prepared:</strong> Oct 27, 2026 &middot; <strong>Seller:</strong> Shop.io &middot; <strong>History:</strong> none given</p>
+
+        <p class="sec stop">Meeting card</p>
+        <p><strong>The bet:</strong> Since January the group runs two jewelry brands online, and its own Q2 report says Marlowe stays fully separate for the customer while the group starts sharing what the customer never sees: online sales, IT and data. Marlowe sells online at a far higher rate than Whitfield, and the man who runs Whitfield's online is the obvious source of that know-how.</p>
+        <p><strong>Ask</strong> (menu, not script)<strong>:</strong></p>
+        <ol>
+          <li>Which parts of Marlowe's online have landed on your desk since January?<span class="hold">holding: the Q2 report lists online sales, IT and data among the areas where group know-how goes to Marlowe</span></li>
+          <li>What has to stay separate between the two shops, and what can be shared?<span class="hold">holding: the same report keeps Marlowe's online fully separate for the customer and puts synergies only where the customer cannot see them</span></li>
+          <li>What will Marlowe's online need as the new boutiques open?<span class="hold">holding: the plan is five to ten new Marlowe shops a year, and each boutique has its own engraving atelier</span></li>
+        </ol>
+        <p class="stop"><strong>Drop:</strong></p>
+        <ol>
+          <li>Online reached almost a sixth of group sales in the first half.</li>
+          <li>Marlowe did about $5.5 million in the second quarter, almost a quarter of it online.</li>
+          <li>Whitfield is now the biggest jewelry network in Canada by floor space.</li>
+        </ol>
+        <p><strong>Give:</strong> a one-page map of how multi-brand jewelry and fashion groups split "shared" from "separate" after buying a personalization brand: which back-office pieces they joined in year one (order flow to the workshops, stock, customer data), which they left apart, and the first number that moved. Seller knowledge, prepare before the meeting.</p>
+        <p><strong>Watch out:</strong> Do not bring up Marlowe's old UK storefront, which ran on Shop.io in 2025 and is switched off today, until you have checked Shop.io's own records on that account. If he raises it, ask what happened and listen.</p>
+        <p><strong>Timing:</strong> THIS WEEK, on a soft signal: his jury seat at the Commerce Leader of the Year gala eleven days ago. Next catalyst: Calder's Q3 report on November 24; its quiet period ends the same day, so no unpublished numbers. Budget year is the calendar year, so you are in the quarter where next year's lines get set.</p>
+        <p><strong>Next:</strong> a working session before November 24 with him and whoever runs Marlowe's online day to day, to map what is shared and what stays separate. Fallback: he names that person and the owner of the ERP behind both brands.</p>
+
+        <hr class="hr">
+        <p class="sec">Dossier</p>
+        <p class="legend">Legend: [F] verified fact with source &middot; [H] my labeled hypothesis &middot; [C] sources disagree, do not quote &middot; [S] scoring math. All resolve in EVIDENCE at the bottom.</p>
+
+        <p class="sec stop">Thesis</p>
+        <p>Whitfield is winning, and the stack under it is new: the group says Whitfield finished a new e-shop engine and mobile app in 2025, and online is the brand's fastest-growing channel. Nobody should walk in selling a Whitfield replatform. The tension sits next door. In January Calder closed the Marlowe deal, and Marlowe arrived with its own Magento estate, its own customer base and a much higher online share. The group's Q2 report draws the line in writing: Marlowe keeps full separation in identity, product, communication and its offline and online sales network, while cooperation targets "areas invisible to the end customer", naming online sales development, logistics, IT and data analytics. Two brands, two stacks, one segment number, and a stated plan to share the back end. The three angles:</p>
+        <ul>
+          <li><strong>The back end is now the merger.</strong> The report separates the customer-facing layer from the invisible layer and puts online, IT and data in the second. That is a systems decision with no public owner yet (revenue, cost) <span class="mk">[F1]</span>. Discovery question: which parts of Marlowe's online now sit with him?</li>
+          <li><strong>The smaller brand sells online better.</strong> Marlowe's online share in Q2 runs at more than twice Whitfield's first-half share, while mall traffic falls and online carries the growth. The know-how may flow from Marlowe to Whitfield, not only the other way (revenue) <span class="mk">[F4][F5][F6]</span>. Discovery question: what does Marlowe do online that Whitfield does not?</li>
+          <li><strong>Online growth carries a cost line management already named.</strong> Jewelry selling costs grew faster than jewelry revenue, and the report blames couriers, packaging and preparing online parcels, in a group whose CEO calls gross margin the most important goal (cost) <span class="mk">[F1][F3]</span>. Discovery question: what does an online order cost to fulfill today, per brand?</li>
+        </ul>
+        <p style="margin-top:0.6rem"><strong>The problem, in their words:</strong> "Marlowe has to stay fully separate for the customer, but everything the customer never sees, online sales, logistics, IT and data, we now run twice." An insider should nod, not squint <span class="mk">[H]</span>.</p>
+
+        <p class="sec stop">By the numbers</p>
+        <table>
+          <tr><th>Metric</th><th>Value</th><th>Read</th></tr>
+          <tr><td>Group revenue, H1 2026</td><td>$190m, +17% YoY <span class="mk">[F2]</span></td><td><strong>Strong</strong> vs H1 2025 at $162m <span class="mk">[F2]</span></td></tr>
+          <tr><td>Group net profit, H1 2026</td><td>$10.7m vs $8.3m <span class="mk">[F2]</span></td><td><strong>Strong</strong> vs their past <span class="mk">[F2]</span></td></tr>
+          <tr><td>Jewelry segment revenue, H1 2026</td><td>$114m, +28% <span class="mk">[F1]</span></td><td><strong>Strong</strong> vs apparel at +4% <span class="mk">[F1]</span></td></tr>
+          <tr><td>Jewelry segment revenue, Q2 2026</td><td>two published figures <span class="mk">[C3]</span></td><td><strong>Careful</strong> do not quote either; say "almost sixty percent of group sales" <span class="mk">[C3]</span></td></tr>
+          <tr><td>Whitfield brand sales, Q2 2026</td><td>$56m, +16% <span class="mk">[F5]</span></td><td><strong>Good</strong> vs their past, but sales per square foot only +1% while space grew 14% <span class="mk">[F5]</span></td></tr>
+          <tr><td>Whitfield online sales, H1 2026</td><td>$9.0m, +43%, 8.4% of brand sales <span class="mk">[F6]</span></td><td><strong>Strong</strong> growth vs stores at +17%; share <strong>Mixed</strong> vs the group's 15.4% <span class="mk">[F6]</span></td></tr>
+          <tr><td>Group online share, H1 2026</td><td>15.4%, up 1.1 points <span class="mk">[F3][F4]</span></td><td><strong>Good</strong> vs their own past <span class="mk">[F4]</span></td></tr>
+          <tr><td>Apparel online share, H1 2026</td><td>24% <span class="mk">[F1]</span></td><td><strong>Good</strong> the yardstick inside the same group <span class="mk">[F1]</span></td></tr>
+          <tr><td>Marlowe revenue / online, Q2 2026</td><td>$5.5m / $1.3m <span class="mk">[F4][F5]</span></td><td><strong>Strong</strong> about 24% online vs Whitfield's 8.4% <span class="mk">[S]</span></td></tr>
+          <tr><td>Marlowe revenue, H1 2026</td><td>two figures <span class="mk">[C2]</span></td><td><strong>Careful</strong> do not quote <span class="mk">[C2]</span></td></tr>
+          <tr><td>Jewelry selling costs, share of sales, H1</td><td>34% vs 31% a year earlier <span class="mk">[F1]</span></td><td><strong>Careful</strong> costs outran revenue, online parcels named <span class="mk">[F1]</span></td></tr>
+          <tr><td>Jewelry gross margin, Q2</td><td>55%, up 2.5 points <span class="mk">[F1]</span></td><td><strong>Mixed</strong> the lift comes mainly from Marlowe; Whitfield itself is still under metal-price pressure <span class="mk">[F5]</span></td></tr>
+          <tr><td>Calder capex plan, 2026</td><td>~$15m, group-wide <span class="mk">[F7]</span></td><td><strong>Careful</strong> split across both segments, mostly stores and refits <span class="mk">[F7]</span></td></tr>
+          <tr><td>Marlowe price</td><td>$28m plus earn-out up to $7m <span class="mk">[F15]</span></td><td><strong>Careful</strong> the earn-out runs on Marlowe's future results <span class="mk">[F15]</span></td></tr>
+          <tr><td>Canada</td><td>17 stores, $2.6m H1 revenue <span class="mk">[F1][F3]</span></td><td><strong>Mixed</strong> sales per square foot below the US, by the VP's own words <span class="mk">[F3]</span></td></tr>
+        </table>
+
+        <p class="sec stop">The person</p>
+        <ul>
+          <li><strong>Who:</strong> Daniel Reyes, Director of E-commerce, Whitfield; anchored to Whitfield by the Commerce Leader of the Year 2026 jury page and the Retail Ops Summit 2027 speaker list, both read today <span class="mk">[F28][F29]</span></li>
+          <li><strong>Tenure:</strong> trade press reported him joining Whitfield "from June" with no year; his previous role ran 2021-2023, so June 2023 and roughly three years and four months in the seat <span class="mk">[F30][H]</span></li>
+          <li><strong>Came from:</strong> Harlow Group (2021-2023), Brightside Beauty (2020-2021), Ridgeline Sports as E-commerce Director (2018-2020); over twenty years across online and offline retail <span class="mk">[F30]</span></li>
+          <li><strong>Typical scope:</strong> as an e-commerce director he has run sales, marketing, customer service, e-commerce logistics and the platform's technical development <span class="mk">[F30]</span></li>
+          <li><strong>What he owns now:</strong> Whitfield online in the US and Canada plus the mobile apps; the FY2025 10-K says Whitfield completed a new e-shop engine and app in 2025, and the Canadian app went live on the App Store on July 21, 2026 <span class="mk">[F18][F27]</span></li>
+          <li><strong>His number:</strong> Whitfield online revenue and online share of brand sales (8.4% in H1), with mobile share and fulfillment cost per order underneath <span class="mk">[H]</span></li>
+          <li><strong>On stage:</strong> jury member of Commerce Leader of the Year 2026, the award for e-commerce directors (gala October 16, 2026, Chicago) <span class="mk">[F28]</span>; listed speaker at Retail Ops Summit, March 22-23, 2027, New York, themed "from scale to results: AI, profitability and the real cost of e-commerce" <span class="mk">[F29]</span></li>
+          <li><strong>What lands on his desk:</strong> online growth of 43% with fulfillment costs rising behind it <span class="mk">[F1][F6]</span>; the Marlowe synergy work in online sales, IT and data <span class="mk">[F1]</span>; Canada's online network, built in 2025 <span class="mk">[F18]</span></li>
+          <li><strong>Searched, nothing found:</strong> no podcast, video interview, guest article or press quote under his name surfaced this run; the Digital Retail Summit page now shows only the 2027 edition, so any earlier talk could not be verified. No public hooks: POVs come from company facts, and an operator who sits on juries and speaks on profitability will want numbers over vision in the room <span class="mk">[H]</span></li>
+          <li><strong>Echo:</strong> a third-party org chart places him at Whitfield in Philadelphia in a three-person "Marketing and E-commerce" team, with Vantage Electronics and Ridgeline Sports as past employers. Current status unverified <span class="mk">[S-echo]</span></li>
+          <li><strong>The human:</strong> a seasoned operator who just finished rebuilding Whitfield's online and has made it the brand's fastest-growing channel; his professional win this year is defending that growth while costs rise; his personal win is becoming the group's reference for jewelry online across both brands, which the Marlowe synergy plan puts within reach <span class="mk">[H]</span></li>
+        </ul>
+        <table>
+          <tr><th>Role in the deal</th><th>The job</th><th>Current way</th><th>Where it strains</th></tr>
+          <tr><td>Champion and technical evaluator; would need Ellison at Whitfield and the Calder board for anything group-wide <span class="mk">[H]</span></td><td>Grow Whitfield online at margin and bring group know-how to Marlowe's online, per the Q2 plan <span class="mk">[F1][F6]</span></td><td>Whitfield on Stackwell (Keystone Storefront, headless, shared API with the apps); Marlowe on Magento 2 with Hyv&auml;; ERP on Microsoft Dynamics NAV/Business Central <span class="mk">[F20][F21][F26]</span></td><td>Two online stacks for one segment, with synergy promised in exactly the layer they occupy; online fulfillment costs rising faster than revenue <span class="mk">[F1]</span></td></tr>
+        </table>
+        <ul>
+          <li><strong>Authorship:</strong> mixed, and it decides the pitch. The Stackwell choice predates him: the vendor's case study quotes a previous e-commerce director, Brian Tate, on why the old custom software had to go (undated page) <span class="mk">[F25]</span>. But the 2025 new engine and app shipped on his watch <span class="mk">[F18][F24]</span>, so on Whitfield's stack he is the author and hears "replatform" as criticism. On Marlowe's stack he is neither author nor inheritor yet; that is the open door <span class="mk">[H]</span></li>
+        </ul>
+
+        <p class="sec stop">The deal</p>
+        <table>
+          <tr><th>Role</th><th>Best guess</th><th>Warm path</th></tr>
+          <tr><td>Economic buyer</td><td>Mark Ellison, president of Whitfield and a Calder VP; group capex sits with Calder under CEO Andrew Pike <span class="mk">[F16][F13][F4][H]</span></td><td>via Reyes; Ellison speaks publicly on luxury expansion, an easy topic opener <span class="mk">[F17]</span></td></tr>
+          <tr><td>Executive sponsor</td><td>Laura Benning, Calder VP, who set "growth in both brands in all markets" <span class="mk">[F3]</span>; Whitfield's state filing lists a board member with matching initials <span class="mk">[F13][H]</span></td><td>via Reyes; unknown otherwise</td></tr>
+          <tr><td>Champion</td><td>Reyes; test him, do not assume him <span class="mk">[H]</span></td><td>the booked meeting</td></tr>
+          <tr><td>Marlowe side</td><td>Ryan Doyle, board member named on marlowejewelry.com <span class="mk">[F21]</span>; Claire Hollis, responsible for brand strategy after the deal <span class="mk">[F16]</span>; Marlowe LLC runs a four-seat board split into two classes of members <span class="mk">[F14]</span></td><td>unknown; ask Reyes who runs Marlowe's online day to day</td></tr>
+          <tr><td>Technical counterpart</td><td>the owner of the Microsoft Dynamics NAV/Business Central ERP, a team hiring a developer right now <span class="mk">[F26]</span></td><td>ask Reyes to bring IT to the next session</td></tr>
+          <tr><td>Likely blockers</td><td>whoever owns the Stackwell relationship on Whitfield's side, and Marlowe's Magento agency (not identified) <span class="mk">[H]</span></td><td>via Reyes; ask how platform decisions get made</td></tr>
+          <tr><td>Unknowns</td><td>who owns Marlowe's online P&amp;L and roadmap; who closed Marlowe's UK Shop.io store and why</td><td>the meeting's objectives, not research gaps</td></tr>
+        </table>
+        <ul>
+          <li><strong>Current way, Whitfield (file 10):</strong> the Stackwell platform with its Keystone Storefront on an Astro frontend. Detected live today: whitfield.com and whitfield.ca answer with an x-keystone-cache header, ship Astro islands, and credit "e-commerce platform by" with a link to stackwell.io in the footer <span class="mk">[F20]</span>. The vendor's own post (December 15, 2025) describes a headless build with one API for web and app, a PIM integration and the Whitfield Circle loyalty card in the app <span class="mk">[F24]</span>. Around it: a site-search tool, four payment and pay-later options, a heatmap tool, a consent banner and a reviews widget <span class="mk">[F20]</span>. ERP: Microsoft Dynamics NAV/Business Central, named in a live posting <span class="mk">[F26]</span></li>
+          <li><strong>Tenure and switching depth, Whitfield:</strong> the current engine was completed in 2025 <span class="mk">[F18]</span>, so it is inside its honeymoon and no renewal window is near <span class="mk">[H]</span>. Wiring is deep: two markets, two apps, loyalty, PIM, shared stock and salon pickup <span class="mk">[F24][F25]</span>. Lead with anything except migration <span class="mk">[H]</span></li>
+          <li><strong>Current way, Marlowe:</strong> Magento 2 with a Hyv&auml; frontend on marlowejewelry.com and marlowe.com, which serves /uk/, /fr/ and /en/. Detected live today from x-built-with: Hyva Themes and x-magento-tags headers <span class="mk">[F21][F22]</span>. In the page: a customer-data SDK, an email-automation tool, two payment gateways and a consent manager <span class="mk">[F21]</span>. Magento on Marlowe's UK domain shows in archived captures from 2022 and 2024, so the stack predates the deal <span class="mk">[F23]</span></li>
+          <li><strong>Crossing, Marlowe and Shop.io:</strong> archived captures of marlowe.co.uk from March 14, 2025 to December 1, 2025 show a Shop.io store. Today www.marlowe.co.uk still sits on Shop.io's servers and forwards visitors to the international English store on marlowe.com <span class="mk">[F23][F22]</span>. Switch-off date unknown, between December 2025 and today. Read: Marlowe ran the UK on Shop.io and folded it back into Magento around the deal <span class="mk">[H]</span>. This is the most important line in the profile, and it is a detection without a story</li>
+          <li><strong>Other crossings:</strong> no Shop.io customer among US jewelry chains surfaced. Reyes's past employers could not be checked against Shop.io's customer list (one storefront blocked the check). Human-only, below <span class="mk">[H]</span></li>
+          <li><strong>Paper path:</strong> a Nasdaq-listed group; capex of platform size sits with group management and the board <span class="mk">[H]</span>. No supplier-registration page surfaced; not searched in depth this run. A shorter path may exist already: a Shop.io account history with a Marlowe entity from the UK store. Check it before any procurement talk <span class="mk">[H]</span></li>
+          <li><strong>Problem math (directional):</strong> Marlowe did $1.3 million online in Q2, so about $5 million a year runs on a stack separate from Whitfield's <span class="mk">[F4 &rarr; H]</span>. What running it separately costs is not visible from outside; ask: "what does keeping Marlowe's online on its own stack cost you a year?"</li>
+          <li><strong>Objection, "Marlowe stays fully separate, online included":</strong> the Q2 report says exactly that <span class="mk">[F1]</span>. Counter: the same report scopes the shared work to what the customer cannot see, and names online sales development, IT and data. Separating the shop window does not separate the engine room</li>
+          <li><strong>Objection, "we just finished a new engine for Whitfield":</strong> true <span class="mk">[F18]</span>. Concede it in the first minute; the conversation is about the brand that arrived in January</li>
+          <li><strong>Objection, "Marlowe already tried Shop.io in the UK":</strong> plausible if the store was closed by choice <span class="mk">[H][F23]</span>. Counter: do not defend; ask what the UK store taught them and what they would need differently</li>
+          <li><strong>Champion test:</strong> his win is owning jewelry online across both brands; his loss is watching Marlowe's online decisions get made elsewhere <span class="mk">[H]</span>. Proof by action: he brings the Marlowe online owner or the ERP owner to the next session, or shares how the synergy workstream is organized</li>
+          <li><strong>The forwardable (a draft to edit, not to forward):</strong> "Marlowe did $1.3 million online in Q2, almost a quarter of its sales; Whitfield did 8.4% online in H1 and grew it 43%. The Q2 report puts online sales, IT and data on the list of things we share without the customer seeing it. Before the 2027 budget closes, worth one session on what runs twice today, what it costs, and what should stay separate." Deliver it with "what did I get wrong?" <span class="mk">[H]</span></li>
+        </ul>
+
+        <p class="sec">Snapshot</p>
+        <ul>
+          <li><strong>Ownership:</strong> Whitfield &amp; Co. is wholly owned by Calder Brands, per Calder's 10-K subsidiary list <span class="mk">[F13]</span>; Whitfield in turn owns all of Marlowe LLC <span class="mk">[F14]</span>. Calder's largest holder is the founding family's holding company at 41%, then two pension funds at 18% and 10% (annual meeting, June 25, 2026) <span class="mk">[F12]</span>. The second fund filed a holding-change notice on September 18, 2026, direction not stated <span class="mk">[F10]</span>. Numbers and capex live at Calder; the group is the account <span class="mk">[F7]</span></li>
+          <li><strong>Seller-side check, both directions:</strong> Shop.io is public, and its founders hold a large share of the votes <span class="mk">[F34]</span>. No Shop.io ownership tie to Calder and no Shop.io partnership touching Ashby, Corvane or Nora Vale surfaced; Nora Vale's storefront runs on another platform <span class="mk">[F35]</span>. The one live crossing is Marlowe's own former Shop.io store <span class="mk">[F23]</span></li>
+          <li><strong>Model:</strong> jewelry and watches through own salons, franchise and online; Whitfield runs more than 160 salons in the US <span class="mk">[F26][C4]</span>, the jewelry segment 240 stores at the end of Q2 <span class="mk">[F5]</span>, and 12 luxury salons carrying Swiss watch brands <span class="mk">[F17]</span></li>
+          <li><strong>Two brands, two customers:</strong> Calder positions Marlowe as fashion and personalized jewelry for a younger customer, "not competing directly with Whitfield's offer" <span class="mk">[F1]</span></li>
+          <li><strong>Winning:</strong> jewelry grew 28% in H1 and was almost sixty percent of Q2 group revenue; Hudson Ridge Securities upgraded Calder to buy on September 9, citing good Whitfield sales in stores and online <span class="mk">[F1][F32][S]</span></li>
+          <li><strong>Competitors:</strong> Ashby and Corvane are the long-standing national chains named alongside Whitfield <span class="mk">[F36, 2014 - background]</span>; for Marlowe, the closest rivals sit in personalized and charm jewelry <span class="mk">[H]</span>. No current market-share figures surfaced; say none aloud</li>
+          <li><strong>Proof for the seller (labeled, never on GIVE):</strong> Solene appears on Shop.io's enterprise page, and its storefront answers "powered-by: Shop.io"; Juniper Row and Petra Lane, both demi-fine and close to personalization, answer the same today <span class="mk">[F33][F35]</span>. None is a direct rival: proof that opens doors, not a landmine</li>
+        </ul>
+
+        <p class="sec stop">Financials</p>
+        <ul>
+          <li><strong>Filing tier:</strong> Calder is Nasdaq-listed, so this run read the FY2025 10-K (April 23, 2026) and the Q2 2026 10-Q (August 19, 2026) directly. Whitfield's own annual filing (July 2026) was not read this run <span class="mk">[F13]</span></li>
+          <li><strong>Growth with margin:</strong> H1 revenue $190 million (+17%) and net profit $10.7 million (revenue) <span class="mk">[F2]</span>. The CEO's frame is margin first (cost) <span class="mk">[F3]</span></li>
+          <li><strong>The jewelry engine:</strong> segment revenue +28% in H1, with Marlowe and new salons doing much of the lifting; organic segment growth in Q2 was 16% (revenue) <span class="mk">[F1][F5]</span></li>
+          <li><strong>The cost of online:</strong> jewelry selling costs rose to 34% of sales, and the 10-Q names couriers, packaging and preparing parcels for online customers among the drivers (cost) <span class="mk">[F1]</span></li>
+          <li><strong>The fears they wrote down:</strong> the risk factors list "wrong strategy", with "investing in the e-commerce channel" among its mitigations, plus a cybersecurity risk; Whitfield's margin sits under precious-metal price pressure (risk) <span class="mk">[F1][F5]</span></li>
+          <li><strong>Context they repeat:</strong> mall traffic fell through most of 2025 and store entries fell again in Q2 2026, partly offset by online (risk) <span class="mk">[F19][F5]</span></li>
+        </ul>
+        <blockquote>"Gross margin growth is the most important goal we set ourselves two years ago."<br>Andrew Pike, Calder CEO, Q2 2026 results, August 20, 2026 <span class="mk">[F3]</span></blockquote>
+        <blockquote>"At the same time, work began to identify areas where the Group's organizational capabilities can be used, in particular online sales development, logistics, IT, data analytics, purchasing and selected administrative functions."<br>Calder 10-Q, Q2 2026, August 19, 2026 <span class="mk">[F1]</span></blockquote>
+
+        <p class="sec stop">Momentum</p>
+        <p><strong>THIS WEEK &middot; soft: the freshest event is his jury seat, and nothing in the window touches the platform directly &middot; next catalyst: Q3 report, November 24, 2026</strong></p>
+        <table>
+          <tr><th>Event</th><th>My problem?</th><th>Fresh?</th><th>Decision owner?</th></tr>
+          <tr><td>Reyes on the Commerce Leader of the Year 2026 jury, gala October 16 <span class="mk">[F28]</span></td><td>no - a person event, not a platform event</td><td>yes - eleven days</td><td>yes - he owns Whitfield online</td></tr>
+          <tr><td>NORTH collection launched with musician Ellie Marsh, October 21 <span class="mk">[F31]</span></td><td>no - merchandising</td><td>yes - six days</td><td>no</td></tr>
+          <tr><td>Calder board of directors change, October 9 <span class="mk">[F11]</span></td><td>no - governance</td><td>yes - two and a half weeks</td><td>no</td></tr>
+          <tr><td>Pension fund holding-change notice, September 18 <span class="mk">[F10]</span></td><td>no - ownership</td><td>close - five weeks</td><td>no</td></tr>
+          <tr><td>Share buyback completed, September 2 <span class="mk">[F9]</span></td><td>no - capital</td><td>no - eight weeks</td><td>no</td></tr>
+          <tr><td>Q2 report: Marlowe synergy work in online, IT and data begins <span class="mk">[F1]</span></td><td>close - it moves priorities near ours</td><td>no - ten weeks</td><td>close - group level</td></tr>
+        </table>
+        <ul>
+          <li><strong>Why THIS WEEK, honestly:</strong> the arithmetic tiers on the jury seat, and the seat says he is respected, not that he is buying. The real reason for the meeting is the Q2 synergy plan, and that is ten weeks old. A meeting is booked, so the trigger has to be found in the room</li>
+          <li><strong>Too old to trigger, kept as background:</strong> the Canadian app (live July 21, 2026, 98 days) <span class="mk">[F27]</span>; the Marlowe closing (January 9, 2026) <span class="mk">[F15]</span>; the Madison Avenue luxury opening (May 20, 2026) <span class="mk">[F17]</span></li>
+          <li><strong>Unscored, no date:</strong> the Business Central developer posting is live but shows no publication date <span class="mk">[F26]</span>; Marlowe's UK Shop.io store went dark at an unknown date <span class="mk">[F23]</span>; the 2027 speaker listing carries no listing date <span class="mk">[F29]</span></li>
+          <li><strong>Excluded false positives:</strong> the Hudson Ridge upgrade on September 9 is an analyst opinion, not an event at the target <span class="mk">[F32]</span>; the marketing specialist posting has no budget ownership <span class="mk">[F26]</span></li>
+          <li><strong>Soft stack:</strong> the Q2 synergy plan, a live ERP posting and the group's stated plan for CRM and marketing automation all point at back-end systems. None is fresh and none attaches to him, so it is a direction, not a window <span class="mk">[F1][F26]</span></li>
+          <li><strong>Listen for:</strong> who owns Marlowe's online roadmap; a named synergy project or deadline; any mention of the ERP upgrade (the posting asks for Business Central/NAV upgrade experience); Q3 online numbers on November 24</li>
+        </ul>
+
+        <p class="sec">Hiring and news</p>
+        <ul>
+          <li><strong>Careers page, verified live today:</strong> two head-office roles, a Microsoft Dynamics 365 Business Central developer/consultant in Philadelphia and a marketing specialist in New York; no e-commerce, platform or data role is open, so no in-house platform build-out is visible (cost) <span class="mk">[F26]</span></li>
+          <li><strong>The ERP posting names the stack:</strong> NAV/Business Central, SQL Server, API/OData/SOAP integrations, with Business Central/NAV upgrade experience as a plus; any commerce platform for either brand meets this ERP (risk) <span class="mk">[F26]</span></li>
+          <li><strong>The apply link names the HR stack:</strong> both postings apply through the same applicant-tracking system (cost) <span class="mk">[F26]</span></li>
+          <li><strong>The year's arc:</strong> Marlowe closed in January, luxury boutiques opened in May, the Canadian app shipped in July, the synergy plan landed in August, and the NORTH collection launched last week. Expansion on every front at once (revenue) <span class="mk">[F15][F17][F27][F1][F31]</span></li>
+          <li><strong>The group is opening marketplace doors:</strong> Calder's three apparel labels opened official stores on Amazon in March 2026; neither jewelry brand was named (revenue) <span class="mk">[F37]</span></li>
+          <li><strong>Customer echo:</strong> Whitfield's US iOS app carries about a three-star average from 64 ratings; a small sample, an echo, not a fact to quote (risk) <span class="mk">[F27]</span></li>
+        </ul>
+
+        <p class="sec stop">Their words</p>
+        <ul>
+          <li><span class="mk">"the jewelry segment"</span> - how the P&amp;L is split and discussed <span class="mk">[F1]</span></li>
+          <li><span class="mk">"areas invisible to the end customer"</span> - the report's line for where synergy happens <span class="mk">[F1]</span></li>
+          <li><span class="mk">"full brand separation"</span> - the promise made to Marlowe <span class="mk">[F1]</span></li>
+          <li><span class="mk">"exchange of competences" / "synergy effects"</span> - how they describe the integration work <span class="mk">[F1]</span></li>
+          <li><span class="mk">"Whitfield Circle"</span> - the loyalty club, built into the app <span class="mk">[F24][F1]</span></li>
+          <li><span class="mk">"super-premium boutiques"</span> - the luxury watch boutiques <span class="mk">[F1]</span></li>
+          <li><span class="mk">"Keystone Storefront"</span> - the incumbent's frontend product name; recognize it, never mock it <span class="mk">[F24]</span></li>
+          <li><span class="mk">"need to warm up"</span> - new stores, the VP on Canada <span class="mk">[F3]</span></li>
+        </ul>
+
+        <p class="sec">Go deeper</p>
+        <ul>
+          <li><strong>Shop.io's own records on the Marlowe UK store</strong> - human-only: who ran the store, on which plan, when it closed and why. This decides whether the meeting is a first touch or a return. The single biggest gap in the profile</li>
+          <li><strong>Who owns Marlowe's online</strong> - human-only: no public source names it; the meeting's first question</li>
+          <li><strong>Whitfield online channel figures</strong> - paste-fixable: the $9.0 million, +43% and 8.4% figures come from one trade article that does not name its origin; Calder's Q2 earnings presentation would confirm them</li>
+          <li><strong>Whitfield's own annual filing</strong> - AI-next-run: filed in July 2026 and fetchable from the state's document repository</li>
+          <li><strong>Board names behind the initials</strong> - human-only: the state's online registry shows initials only; read the full filing</li>
+          <li><strong>Daniel Reyes's LinkedIn</strong> - human-only. Two-minute grab list: headline and about section verbatim; last five posts, topics and tone; tenure in this role and the two before it, checked against Shop.io's customer list; what he comments on and reshares; shared connections</li>
+          <li><strong>The back-channel</strong> - human-only: one or two people in Whitfield's e-commerce team active publicly in the last month; ask off the record what is working</li>
+          <li><strong>Competitor platforms and the "versus" map</strong> - AI-next-run: Ashby's and Corvane's sites blocked automated checks today</li>
+          <li><strong>HISTORY was empty</strong> - before the meeting: check the CRM, ask colleagues, and debrief whoever booked this meeting (their notes, the booking call, or the referrer's own words)</li>
+          <li><strong>Paste any of these</strong> and the touched sections rebuild, marked [UPGRADED]</li>
+        </ul>
+
+        <hr class="hr">
+        <p class="sec stop" data-dwell="2.4">POVs</p>
+        <p>Grown from the thesis angles. <strong>Suggested order:</strong> open cold with POV 1 and POV 3, both diagnostic, and POV 4 as the safest numbers-led opener. Hold POV 5 and POV 6 for after a reply. POV 2 is the most provocative; test it on a manager below him first.</p>
+
+        <p style="margin-top:0.8rem"><strong>1. The back end is the merger.</strong> The group promised Marlowe full separation and then listed online sales, IT and data as the places to share. That makes the engine room, not the shop window, the real integration project, and it has no public owner yet <span class="mk">[H]</span>.</p>
+        <ul>
+          <li><strong>Move:</strong> find the common root</li>
+          <li><strong>Built on:</strong> <span class="mk">[F1]</span> full separation including the online sales network &middot; <span class="mk">[F1]</span> synergy areas invisible to the end customer &middot; <span class="mk">[F21][F20]</span> two separate stacks detected</li>
+          <li><strong>Ammo:</strong> "areas invisible to the end customer" and "online sales development, logistics, IT, data analytics" - Calder 10-Q, Q2 2026</li>
+          <li><strong>First test:</strong> a Marlowe e-commerce or operations manager</li>
+        </ul>
+
+        <p style="margin-top:0.8rem"><strong>2. The smaller brand is the online teacher.</strong> Everyone assumes the 174-year-old brand teaches the newcomer. Online, the numbers run the other way: Marlowe sold almost a quarter online last quarter, Whitfield under a tenth in the half. The synergy worth most may flow from Marlowe to Whitfield <span class="mk">[H]</span>.</p>
+        <ul>
+          <li><strong>Move:</strong> flip the status quo</li>
+          <li><strong>Built on:</strong> <span class="mk">[F4]</span> Marlowe Q2 online $1.3m of $5.5m &middot; <span class="mk">[F6]</span> Whitfield online 8.4% of H1 sales &middot; <span class="mk">[F1]</span> "exchange of competences"</li>
+          <li><strong>Ammo:</strong> "exchange of competences" - the report's own phrase for the integration work</li>
+          <li><strong>First test:</strong> never open with this; try it on a Whitfield e-commerce manager first. It touches his own number</li>
+        </ul>
+
+        <p style="margin-top:0.8rem" class="stop" data-dwell="2.4"><strong>3. The malls are emptying into the phone.</strong> Store entries fell again in Q2 while Whitfield's space grew 14% and sales per square foot rose about 1%. Online grew 43%. The salon network is still the brand, but the growth has already moved channel <span class="mk">[H]</span>.</p>
+        <ul>
+          <li><strong>Move:</strong> name the unspoken pain</li>
+          <li><strong>Built on:</strong> <span class="mk">[F5]</span> store entries down in Q2, sales per square foot +1%, space +14% &middot; <span class="mk">[F6]</span> online +43% &middot; <span class="mk">[F19]</span> the mall traffic decline named in the CEO letter</li>
+          <li><strong>Ammo:</strong> Hudson Ridge's note that falling mall traffic was "partly offset by good online growth"</li>
+          <li><strong>First test:</strong> Reyes directly; it praises his channel before it asks anything</li>
+        </ul>
+
+        <p style="margin-top:0.8rem"><strong>4. Every online order carries a parcel.</strong> Margin is the CEO's first goal, and online is the fastest-growing channel, yet the report names couriers, packaging and parcel preparation as reasons jewelry selling costs outran revenue. Online growth and margin are now one conversation, measured per order <span class="mk">[H]</span>.</p>
+        <ul>
+          <li><strong>Move:</strong> find the common root</li>
+          <li><strong>Built on:</strong> <span class="mk">[F1]</span> selling costs at 34% of sales, online parcel costs named &middot; <span class="mk">[F3]</span> margin as the top goal &middot; <span class="mk">[F6]</span> online +43%</li>
+          <li><strong>Ammo:</strong> "Gross margin growth is the most important goal we set ourselves two years ago." - Andrew Pike, August 20, 2026</li>
+          <li><strong>First test:</strong> Reyes directly; the safest cold opener in this set</li>
+        </ul>
+
+        <p style="margin-top:0.8rem" class="stop" data-dwell="2.4"><strong>5. Ten new ateliers a year need one order flow.</strong> Every Marlowe boutique engraves on site, and the plan adds five to ten boutiques a year. If that works, online orders, store ateliers and stock have to agree on one promise per piece across sixty-plus locations, and nobody is staffed for that problem yet <span class="mk">[H]</span>.</p>
+        <ul>
+          <li><strong>Move:</strong> plant the future problem</li>
+          <li><strong>Built on:</strong> <span class="mk">[F1]</span> an atelier in every boutique, five to ten new shops a year, street shops moving into malls &middot; <span class="mk">[F3]</span> Marlowe added 48 stores</li>
+          <li><strong>Ammo:</strong> "each of them has an atelier, a workshop where engravings are made" - Calder 10-Q, Q2 2026</li>
+          <li><strong>First test:</strong> a Marlowe retail or operations manager, after a reply</li>
+        </ul>
+
+        <p style="margin-top:0.8rem"><strong>6. The UK is the cheapest new market they have.</strong> Canada took 17 stores that still "need to warm up". Marlowe already has a UK storefront, and today its UK domain lands customers on the international English version. For a group that plans growth "in all markets", the next country may be an online decision, not a lease <span class="mk">[H]</span>.</p>
+        <ul>
+          <li><strong>Move:</strong> raise the ceiling</li>
+          <li><strong>Built on:</strong> <span class="mk">[F3]</span> 17 Canadian stores, growth in both brands in all markets &middot; <span class="mk">[F22]</span> marlowe.co.uk forwards to marlowe.com/en/, and a /uk/ store exists</li>
+          <li><strong>Ammo:</strong> "In jewelry we plan further growth in both brands in all markets" - Laura Benning, Calder VP, August 20, 2026</li>
+          <li><strong>First test:</strong> Marlowe's marketing lead, after a reply; check the UK domain again the morning you use it</li>
+        </ul>
+
+        <hr class="hr">
+        <p class="sec stop">Evidence</p>
+        <table>
+          <tr><th>Marker</th><th>Source</th><th>Date</th></tr>
+          <tr><td><span class="mk">[F1]</span></td><td>Calder 10-Q, Q2 2026, management discussion: Marlowe synergy and separation, five to ten stores a year, ateliers, Canada, jewelry results, selling costs, online parcel costs, risk factors, apparel online 24%</td><td>Aug 19, 2026</td></tr>
+          <tr><td><span class="mk">[F2]</span></td><td>business daily, Calder Q2 and first-half results</td><td>Aug 20, 2026</td></tr>
+          <tr><td><span class="mk">[F3]</span></td><td>business daily, Calder management interview after results: Pike and Benning quotes, online share, store counts, Canada</td><td>Aug 20, 2026</td></tr>
+          <tr><td><span class="mk">[F4]</span></td><td>retail trade site, Calder first half: online share 15.4%, Marlowe Q2 $5.5m with $1.3m online, capex</td><td>Aug 20, 2026</td></tr>
+          <tr><td><span class="mk">[F5]</span></td><td>Hudson Ridge Securities, note after Q2 2026: Marlowe $3.5m Q1 and $5.5m Q2, Whitfield $56m +16%, sales per square foot, mall traffic, metal prices</td><td>Aug 20, 2026</td></tr>
+          <tr><td><span class="mk">[F6]</span></td><td>watch-trade blog, Whitfield first-half channel figures: online $9.0m, +43%, 8.4%; stores +17%. Single source, origin not named</td><td>Aug 29, 2026</td></tr>
+          <tr><td><span class="mk">[F7]</span></td><td>investor news wire, Calder first-half report: 2026 capex ~$15m, segment priorities</td><td>Aug 19, 2026</td></tr>
+          <tr><td><span class="mk">[F8]</span></td><td>Calder investor calendar (Q3 report Nov 24, 2026) and quiet-period page</td><td>Jan 20, 2026, read Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F9]</span></td><td>Calder 8-K, share buyback completed: 3.4% of shares</td><td>Sep 2, 2026</td></tr>
+          <tr><td><span class="mk">[F10]</span></td><td>Calder 8-K, pension fund holding-change notice</td><td>Sep 18, 2026</td></tr>
+          <tr><td><span class="mk">[F11]</span></td><td>Calder 8-K, board of directors change</td><td>Oct 9, 2026</td></tr>
+          <tr><td><span class="mk">[F12]</span></td><td>Calder proxy statement, shareholder structure</td><td>as of annual meeting Jun 25, 2026, read Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F13]</span></td><td>Calder 10-K subsidiary list and Whitfield's state filing: sole owner Calder, three-person board, no 2026 board change, annual filing July 2026</td><td>read Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F14]</span></td><td>state filing, Marlowe LLC: sole member Whitfield, four-seat board in two classes</td><td>read Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F15]</span></td><td>investor news wire, Marlowe definitive agreement: $28m plus an earn-out up to $7m to the founder's family trust, credit-financed</td><td>Jan 9, 2026</td></tr>
+          <tr><td><span class="mk">[F16]</span></td><td>retail trade press, Whitfield acquires Marlowe: Ellison as Whitfield president and Calder VP, Hollis's role</td><td>Jan 9, 2026</td></tr>
+          <tr><td><span class="mk">[F17]</span></td><td>retail trade press, two new boutiques on Madison Avenue, 12 luxury salons, Ellison quotes</td><td>May 20, 2026</td></tr>
+          <tr><td><span class="mk">[F18]</span></td><td>Calder FY2025 10-K: Whitfield completed a new e-shop engine and app; Salesforce in apparel; Canadian online network built in 2025; risk factors</td><td>Apr 23, 2026</td></tr>
+          <tr><td><span class="mk">[F19]</span></td><td>Calder CEO letter to shareholders, FY2025: $360m revenue, mall traffic decline, "digital channels"</td><td>Apr 23, 2026</td></tr>
+          <tr><td><span class="mk">[F20]</span></td><td>whitfield.com and whitfield.ca live fingerprint: x-keystone-cache header, Astro islands, footer credit linking stackwell.io, site search, payment and pay-later options, heatmap, consent banner, reviews widget</td><td>verified live Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F21]</span></td><td>marlowejewelry.com live fingerprint: x-built-with Hyva Themes, x-magento-tags, customer-data SDK, email automation, two payment gateways, consent manager; legal entities; Ryan Doyle as board member</td><td>verified live Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F22]</span></td><td>marlowe.com live: Magento/Hyv&auml; with /uk/, /fr/ and /en/; marlowe.co.uk forwards to marlowe.com/en/</td><td>verified live Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F23]</span></td><td>www.marlowe.co.uk: still served by Shop.io today and forwarding visitors to marlowe.com/en/; Wayback Machine captures show a Shop.io store from Mar 14, 2025 to Dec 1, 2025, and Magento in 2022 and 2024 captures</td><td>checked Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F24]</span></td><td>stackwell.io blog, "How we built Whitfield's mobile app": Keystone Storefront, headless, shared API, PIM, loyalty card</td><td>Dec 15, 2025</td></tr>
+          <tr><td><span class="mk">[F25]</span></td><td>stackwell.io replatforming page, Whitfield entry with a Brian Tate quote</td><td>undated page, read Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F26]</span></td><td>careers.whitfield.com, including the Business Central developer posting and the marketing specialist posting; applications through an applicant-tracking system; "more than 160 salons"</td><td>verified live on their own careers page Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F27]</span></td><td>Apple App Store, Whitfield app (Canada), released Jul 21, 2026, and Whitfield app (US), updated Jun 10, 2026, 64 ratings</td><td>read Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F28]</span></td><td>Commerce Leader of the Year awards site, jury: "Director of E-commerce, Whitfield"; gala Oct 16, 2026, Chicago</td><td>read Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F29]</span></td><td>Retail Ops Summit site, speaker list and theme, Mar 22-23, 2027, New York</td><td>read Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F30]</span></td><td>retail careers site, Daniel Reyes profile: appointment "from June", prior employers, scope</td><td>undated page, year inferred 2023 - background</td></tr>
+          <tr><td><span class="mk">[F31]</span></td><td>Calder press office, the NORTH collection with musician Ellie Marsh</td><td>Oct 21, 2026</td></tr>
+          <tr><td><span class="mk">[F32]</span></td><td>business daily, Hudson Ridge Securities raises Calder to buy</td><td>Sep 9, 2026</td></tr>
+          <tr><td><span class="mk">[F33]</span></td><td>shop.io/enterprise: what Shop.io sells, Solene among named customers</td><td>read Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F34]</span></td><td>Shop.io annual report: founders' voting power</td><td>as of Apr 2026</td></tr>
+          <tr><td><span class="mk">[F35]</span></td><td>live headers: Solene, Juniper Row and Petra Lane storefronts answer "powered-by: Shop.io"; Nora Vale's storefront shows another platform; Ashby and Corvane returned 403</td><td>checked Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[F36]</span></td><td>business daily, US jewelry chains and market shares</td><td>c. 2014 - background, labeled with its year</td></tr>
+          <tr><td><span class="mk">[F37]</span></td><td>retail trade press, Calder's apparel labels open Amazon stores</td><td>Mar 12, 2026</td></tr>
+          <tr><td><span class="mk">[C1]</span></td><td>Group store count at the end of Q2 2026: 510 locations including franchise (business daily; Hudson Ridge) vs 501 (business daily interview). Do not quote</td><td>Aug 20, 2026</td></tr>
+          <tr><td><span class="mk">[C2]</span></td><td>Marlowe revenue H1 2026: $9.3m (10-Q) vs $9.0m implied by Hudson Ridge's $3.5m Q1 plus $5.5m Q2. Do not quote</td><td>Aug 19-20, 2026</td></tr>
+          <tr><td><span class="mk">[C3]</span></td><td>Jewelry revenue Q2 2026: $62.1m, +28% (10-Q, business daily, Hudson Ridge) vs $61.7m, +27.6% (watch-trade blog, as retail revenue). Do not quote</td><td>Aug 19-29, 2026</td></tr>
+          <tr><td><span class="mk">[C4]</span></td><td>Whitfield salon count: "more than 160 salons" (careers posting, live Oct 27, 2026) vs "more than 130" (stackwell.io page, undated). Do not quote a count</td><td>Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[C5]</span></td><td>Calder's quiet-period page lists the Q3 window as starting "October 27, 2025"; the year reads as a typo for 2026, and the investor calendar puts the Q3 report on Nov 24, 2026 <span class="mk">[F8]</span></td><td>read Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[S]</span></td><td>Scoring audit: jury seat, gala Oct 16: 1 x 2 + 2 = 4 &middot; NORTH launch Oct 21: 1 x 2 = 2 &middot; board change Oct 9: 1 x 1 = 1 &middot; pension fund notice Sep 18: 1 x 1 = 1 &middot; buyback completed Sep 2: 1 x 0.5 = 0.5 &middot; Q2 report synergy plan Aug 19: 2 x 0.5 = 1 &middot; best event 4 &rarr; THIS WEEK (3 to 5). Not scored: ERP posting and Marlowe UK store switch-off (no date), 2027 speaker listing (no listing date), Canadian app (98 days). Excluded: Hudson Ridge upgrade, marketing posting. Also: Marlowe online share 1.3 / 5.5 = 24%; jewelry share of Q2 group revenue 62.1 / 104.5 = 59%</td><td>Oct 27, 2026</td></tr>
+          <tr><td><span class="mk">[S-echo]</span></td><td>third-party org chart site: Reyes at Whitfield, Philadelphia, "Marketing and E-commerce" team of three, past Vantage Electronics and Ridgeline Sports. Echo, current status unverified</td><td>read Oct 27, 2026</td></tr>
+        </table>
+
+        <p class="stop" style="margin-top:1.2rem"><strong>Reality check: 15 of 16 passed, 1 failed, 0 did not apply.</strong> Biggest failure: the conflict check on the seller's side is incomplete; the profile found that Marlowe itself ran a Shop.io store, but it could not check Reyes's past employers against Shop.io's customers, and Shop.io's own records on the Marlowe account can only be read by you. Self-check on the four silent bans: no POV or card line argues for the seller's product, GIVE uses no case study, no linkedin.com address is in EVIDENCE, and every stack named here comes from a detection that returned it.</p>
+        <p class="close" style="margin-top:1.2rem">Ask me why about any line and I will unpack the reasoning. Ask what do I say if about any objection and I will drill you.</p>
+        <p class="close">This profile wants to be graded. Send it back, what it got wrong and what it nailed: xray@joannatu.com. Every reply shapes the next version.</p>
+        <p class="close">Save this profile with today's date, October 27, 2026. The next Whitfield run starts in delta mode against it. After the meeting, type "case" with your notes pasted and I will draft the one-page internal business case.</p>
+        <p class="close">Built on Account X-ray by Joanna Turczynska. The method evolves - new versions: salesled.substack.com</p>
+</div>
+<!--doc-end-->
+</article>
+
+<section class="outro">
+  <div class="wrap">
+    <h2 class="display-italic">Every name above is changed. The method is not.</h2>
+    <p>A real run does exactly this on the company you are meeting: live searches, dated sources, labeled hypotheses, and a reality check that admits what it missed. It runs in the AI you already use. Get the brief for your AI and try it on your next meeting.</p>
+    <div class="row">
+      <a class="btn-mustard" href="/#pack">Run your first X-ray &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span class="display-italic" style="font-size:1.25rem">Account X-ray</span>
+    <span class="small">Open source under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.</span>
+    <span class="small">By Joanna Turczynska &middot; <a href="https://salesled.substack.com" target="_blank" rel="noopener">salesled.substack.com</a> &middot; <a href="/privacy">Privacy</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
